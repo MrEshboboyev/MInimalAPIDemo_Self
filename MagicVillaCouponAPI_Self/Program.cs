@@ -15,7 +15,12 @@ if (app.Environment.IsDevelopment())
 }
 
 // using MapGet
-app.MapGet(("/hello"), () => "Hello, World!");
+app.MapGet(("/hello"), () =>
+{
+    //return Results.Ok("Hello, World!");
+    return Results.BadRequest("Exception!!!");
+});
+
 
 // using MapPost
 app.MapPost(("/helloPost"), () => "Hello, World from Post");
