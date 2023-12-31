@@ -48,6 +48,7 @@ app.MapPost("/api/coupon", (
     IValidator<CouponCreateDTO> _validation,
     [FromBody] CouponCreateDTO coupon_C_DTO) =>
 {
+    var validationResult = _validation.ValidateAsync(coupon_C_DTO).GetAwaiter().GetResult();
     if(String.IsNullOrEmpty(coupon_C_DTO.Name))
     {
         return Results.BadRequest("Invalid Id or Coupon Name");
