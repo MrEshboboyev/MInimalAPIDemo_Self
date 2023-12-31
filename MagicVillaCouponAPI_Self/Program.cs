@@ -17,6 +17,9 @@ builder.Services.AddSwaggerGen();
 // adding AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+// add validate services
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
