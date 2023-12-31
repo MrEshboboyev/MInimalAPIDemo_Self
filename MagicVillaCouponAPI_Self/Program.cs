@@ -53,10 +53,22 @@ app.MapGet("/api/coupon/{id:int}", (
     ILogger<Program> _logger, 
     IMapper _mapper, int id) =>
 {
+    // creating response object
+    APIResponse response = new APIResponse();
+
     var coupon = CouponStore.couponList.FirstOrDefault(x => x.Id == id);
-    CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);    
-    return Results.Ok(couponDTO);
-}).WithName("GetCouponById").Produces<CouponDTO>(200);
+
+    // mapping Coupon to CouponDTO
+    CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);
+
+    // initialize values for response
+    response.IsSuccess = true;
+    response.Result = couponDTO;
+    response.StatusCode = HttpStatusCode.OK;
+
+
+    return Results.Ok(response);
+}).WithName("GetCouponById").Produces<APIResponse>(200);
 
 
 // create coupon
