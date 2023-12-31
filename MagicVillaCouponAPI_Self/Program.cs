@@ -1,5 +1,6 @@
 using MagicVillaCouponAPI_Self.Data;
 using MagicVillaCouponAPI_Self.Models;
+using MagicVillaCouponAPI_Self.Models.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,11 +35,11 @@ app.MapGet("/api/coupon/{id:int}", (int id) =>
 
 
 // create coupon
-app.MapPost("/api/coupon", ([FromBody] Coupon coupon) =>
+app.MapPost("/api/coupon", ([FromBody] CouponCreateDTO coupon_C_DTO) =>
 {
-    if(coupon.Id != 0)
+    if(String.IsNullOrEmpty(coupon_C_DTO.Name))
     {
-        return Results.BadRequest("ID will be zero");
+        return Results.BadRequest("Invalid Id or Coupon Name");
     }
 
     coupon.Id = CouponStore.couponList.OrderByDescending(x => x.Id).First().Id + 1;
