@@ -37,7 +37,9 @@ app.MapGet("/api/coupon", (ILogger<Program> _logger)  => {
 
 
 // get by id coupon
-app.MapGet("/api/coupon/{id:int}", (IMapper _mapper, int id) =>
+app.MapGet("/api/coupon/{id:int}", (
+    ILogger<Program> _logger, 
+    IMapper _mapper, int id) =>
 {
     var coupon = CouponStore.couponList.FirstOrDefault(x => x.Id == id);
     CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);    
