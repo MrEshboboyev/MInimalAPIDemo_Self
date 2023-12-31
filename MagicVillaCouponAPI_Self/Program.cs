@@ -49,9 +49,9 @@ app.MapPost("/api/coupon", (
     [FromBody] CouponCreateDTO coupon_C_DTO) =>
 {
     var validationResult = _validation.ValidateAsync(coupon_C_DTO).GetAwaiter().GetResult();
-    if(String.IsNullOrEmpty(coupon_C_DTO.Name))
+    if(!validationResult.IsValid)
     {
-        return Results.BadRequest("Invalid Id or Coupon Name");
+        return Results.BadRequest(validationResult.Errors.FirstOrDefault().ToString());
     }
 
     // is coupon's Name unique
