@@ -119,11 +119,47 @@ app.MapPost("/api/coupon", (
 
 // update coupon
 app.MapPut("/api/coupon/{id:int}", (
-    ILogger<Program> _logger,
+    IValidator<CouponUpdateDTO> _validation,
     IMapper _mapper, int id, 
     [FromBody] CouponUpdateDTO coupon_U_DTO) =>
 {
+    // creating response object
+    APIResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest };
 
-});
+    var validationResult = _validation.ValidateAsync(coupon_U_DTO).GetAwaiter().GetResult();
+    if (!validationResult.IsValid)
+    {
+        response.ErrorMessages.Add(validationResult.Errors.FirstOrDefault().ToString());
+        return Results.BadRequest(response);
+    }
+
+    // is coupon's Name unique
+    if (CouponStore.couponList.FirstOrDefault(x => x.Name == coupon_U_DTO.Name) != null)
+    {
+        response.ErrorMessages.Add("Coupon Name already exists");
+        return Results.BadRequest(response);
+    }
+
+
+    Coupon couponFromStore = CouponStore.couponList.FirstOrDefault(x => x.Id == coupon_U_DTO.Id);
+    // Is coupon null
+    if (couponFromStore == null)
+    {
+        response.ErrorMessages.Add("Coupon can't be found");
+        return Results.BadRequest(response);
+    }
+    couponFromStore.IsActive = coupon_U_DTO.IsActive;
+    couponFromStore.Name = coupon_U_DTO.Name;
+    couponFromStore.Percent = coupon_U_DTO.Percent;
+    couponFromStore.LastUpdated = DateTime.Now;
+
+
+    // initialize values for response
+    response.IsSuccess = true;
+    response.Result = _mapper.Map<CouponDTO>(couponFromStore);
+    response.StatusCode = HttpStatusCode.OK;
+
+    return Results.Ok(response);
+}).WithName("UpdateCoupon").Produces<APIResponse>(200).Produces(400);
 app.UseHttpsRedirection();
 app.Run();
