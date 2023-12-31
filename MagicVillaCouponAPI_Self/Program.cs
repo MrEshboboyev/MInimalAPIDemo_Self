@@ -17,5 +17,8 @@ if (app.Environment.IsDevelopment())
 // using MapGet
 app.MapGet(("/hello"), () => "Hello, World!");
 
+// using MapPost
+app.MapPost(("/helloPost"), () => "Hello, World from Post");
+
 app.UseHttpsRedirection();
 app.Run();
