@@ -15,10 +15,12 @@ if (app.Environment.IsDevelopment())
 }
 
 // using MapGet
-app.MapGet(("/hello"), () =>
+app.MapGet(("/hello/{id:int}"), (int id) =>
 {
     //return Results.Ok("Hello, World!");
-    return Results.BadRequest("Exception!!!");
+    //return Results.BadRequest("Exception!!!");
+
+    return Results.Ok("User is from Id : " + id);
 });
 
 
