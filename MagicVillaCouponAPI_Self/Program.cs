@@ -6,6 +6,7 @@ using MagicVillaCouponAPI_Self.Models;
 using MagicVillaCouponAPI_Self.Models.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,9 +32,19 @@ if (app.Environment.IsDevelopment())
 
 // get all coupons
 app.MapGet("/api/coupon", (ILogger<Program> _logger)  => {
+    // creating response object
     APIResponse response = new APIResponse();
+
+    // logging information of method
     _logger.Log(LogLevel.Information, "Getting All Coupons");
-    return Results.Ok(CouponStore.couponList);
+
+    // initialize values for response
+    response.IsSuccess = true;
+    response.Result = CouponStore.couponList;
+    response.StatusCode = HttpStatusCode.OK;
+
+    // returning response
+    return Results.Ok(response);
 }).WithName("GetCoupons").Produces<IEnumerable<Coupon>>(200);
 
 
