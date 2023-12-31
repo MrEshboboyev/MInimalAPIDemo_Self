@@ -77,6 +77,9 @@ app.MapPost("/api/coupon", (
     IValidator<CouponCreateDTO> _validation,
     [FromBody] CouponCreateDTO coupon_C_DTO) =>
 {
+    // creating response object
+    APIResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest };
+
     var validationResult = _validation.ValidateAsync(coupon_C_DTO).GetAwaiter().GetResult();
     if(!validationResult.IsValid)
     {
