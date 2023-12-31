@@ -117,5 +117,13 @@ app.MapPost("/api/coupon", (
 }).WithName("CreateCoupon").Produces<APIResponse>(200).Produces(400);
 
 
+// update coupon
+app.MapPut("/api/coupon/{id:int}", (
+    ILogger<Program> _logger,
+    IMapper _mapper, int id, 
+    [FromBody] CouponUpdateDTO coupon_U_DTO) =>
+{
+
+});
 app.UseHttpsRedirection();
 app.Run();
