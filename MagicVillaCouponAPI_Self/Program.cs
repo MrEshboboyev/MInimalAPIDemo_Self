@@ -54,24 +54,12 @@ app.MapPost("/api/coupon", (IMapper _mapper, [FromBody] CouponCreateDTO coupon_C
     }
 
     // CouponCreateDTO to Coupon
-    Coupon coupon = new()
-    {
-        Name = coupon_C_DTO.Name,
-        Percent = coupon_C_DTO.Percent,
-        IsActive = coupon_C_DTO.IsActive,
-        Created = DateTime.Now
-    };
+    Coupon coupon = _mapper.Map<Coupon>(coupon_C_DTO);
     coupon.Id = CouponStore.couponList.OrderByDescending(x => x.Id).First().Id + 1;
     CouponStore.couponList.Add(coupon);
 
     // Coupon to CouponDTO (for displaying coupon some fields)
-    CouponDTO couponDTO = new()
-    {
-        Name = coupon.Name,
-        Percent = coupon.Percent,
-        IsActive = coupon.IsActive,
-        Created = coupon.Created
-    };
+    CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);
     return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, couponDTO);
 }).WithName("CreateCoupon").Produces<Coupon>(200).Produces(400);
 
