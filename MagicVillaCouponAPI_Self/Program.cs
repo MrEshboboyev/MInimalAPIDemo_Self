@@ -33,10 +33,12 @@ app.MapGet("/api/coupon", (ILogger<Program> _logger)  => {
 
 
 // get by id coupon
-app.MapGet("/api/coupon/{id:int}", (int id) =>
+app.MapGet("/api/coupon/{id:int}", (IMapper _mapper, int id) =>
 {
-    return Results.Ok(CouponStore.couponList.FirstOrDefault(x => x.Id == id));
-}).WithName("GetCouponById").Produces<Coupon>(200);
+    var coupon = CouponStore.couponList.FirstOrDefault(x => x.Id == id);
+    CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);    
+    return Results.Ok(couponDTO);
+}).WithName("GetCouponById").Produces<CouponDTO>(200);
 
 
 // create coupon
@@ -61,7 +63,7 @@ app.MapPost("/api/coupon", (IMapper _mapper, [FromBody] CouponCreateDTO coupon_C
     // Coupon to CouponDTO (for displaying coupon some fields)
     CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);
     return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, couponDTO);
-}).WithName("CreateCoupon").Produces<Coupon>(200).Produces(400);
+}).WithName("CreateCoupon").Produces<CouponDTO>(200).Produces(400);
 
 
 app.UseHttpsRedirection();
