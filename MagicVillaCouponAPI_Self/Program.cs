@@ -47,9 +47,27 @@ app.MapPost("/api/coupon", ([FromBody] CouponCreateDTO coupon_C_DTO) =>
     {
         return Results.BadRequest("Coupon Name already exists");
     }
+
+    // CouponCreateDTO to Coupon
+    Coupon coupon = new()
+    {
+        Name = coupon_C_DTO.Name,
+        Percent = coupon_C_DTO.Percent,
+        IsActive = coupon_C_DTO.IsActive,
+        Created = DateTime.Now
+    };
     coupon.Id = CouponStore.couponList.OrderByDescending(x => x.Id).First().Id + 1;
     CouponStore.couponList.Add(coupon);
-    return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, coupon);
+
+    // Coupon to CouponDTO (for displaying coupon some fields)
+    CouponDTO couponDTO = new()
+    {
+        Name = coupon.Name,
+        Percent = coupon.Percent,
+        IsActive = coupon.IsActive,
+        Created = coupon.Created
+    };
+    return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, couponDTO);
 }).WithName("CreateCoupon").Produces<Coupon>(200).Produces(400);
 
 
