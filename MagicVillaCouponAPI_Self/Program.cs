@@ -114,7 +114,7 @@ app.MapPost("/api/coupon", (
     response.StatusCode = HttpStatusCode.Created;
 
     return Results.Ok(response);
-}).WithName("CreateCoupon").Produces<CouponDTO>(200).Produces(400);
+}).WithName("CreateCoupon").Produces<APIResponse>(200).Produces(400);
 
 
 app.UseHttpsRedirection();
