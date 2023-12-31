@@ -161,5 +161,28 @@ app.MapPut("/api/coupon/{id:int}", (
 
     return Results.Ok(response);
 }).WithName("UpdateCoupon").Produces<APIResponse>(200).Produces(400);
+
+// delete coupon
+app.MapDelete("/api/coupon/{id:int}", (int id) =>
+{
+    // creating response object
+    APIResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest };
+
+    var couponFromStore = CouponStore.couponList.FirstOrDefault(x => x.Id == id);
+    if(couponFromStore == null)
+    {
+        response.ErrorMessages.Add("Invalid id");
+        return Results.BadRequest(response);
+    }
+
+    CouponStore.couponList.Remove(couponFromStore);
+
+    // initialize values for response
+    response.IsSuccess = true;
+    response.StatusCode = HttpStatusCode.NoContent;
+
+    return Results.Ok(response);
+}).WithName("DeleteCoupon").Produces<APIResponse>(200).Produces(400);
+
 app.UseHttpsRedirection();
 app.Run();
