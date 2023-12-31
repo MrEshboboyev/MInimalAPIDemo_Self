@@ -1,0 +1,6 @@
+@RegularAPI_Self_HostAddress = http://localhost:5160
+
+GET {{RegularAPI_Self_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
