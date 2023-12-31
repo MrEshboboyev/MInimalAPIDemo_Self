@@ -1,4 +1,6 @@
 using MagicVillaCouponAPI_Self.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +20,14 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/api/coupon", ()  => {
     return Results.Ok(CouponStore.couponList);
-});
+}).WithName("GetCoupons");
 
 app.MapGet("/api/coupon{id:int}", (int id) =>
 {
     return Results.Ok(CouponStore.couponList.FirstOrDefault(x => x.Id == id));
-});
+}).WithName("GetCouponById");
+
+
 
 app.UseHttpsRedirection();
 app.Run();
