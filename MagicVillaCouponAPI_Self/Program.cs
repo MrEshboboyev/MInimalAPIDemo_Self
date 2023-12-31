@@ -89,13 +89,15 @@ app.MapPost("/api/coupon", (
     var validationResult = _validation.ValidateAsync(coupon_C_DTO).GetAwaiter().GetResult();
     if(!validationResult.IsValid)
     {
-        return Results.BadRequest(validationResult.Errors.FirstOrDefault().ToString());
+        response.ErrorMessages.Add(validationResult.Errors.FirstOrDefault().ToString());
+        return Results.BadRequest(response);
     }
 
     // is coupon's Name unique
     if(CouponStore.couponList.FirstOrDefault(x => x.Name == coupon_C_DTO.Name) !=  null)
     {
-        return Results.BadRequest("Coupon Name already exists");
+        response.ErrorMessages.Add("Coupon Name already exists");
+        return Results.BadRequest(response);
     }
 
     // CouponCreateDTO to Coupon
