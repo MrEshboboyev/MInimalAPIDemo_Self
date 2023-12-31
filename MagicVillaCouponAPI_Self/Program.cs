@@ -107,7 +107,13 @@ app.MapPost("/api/coupon", (
 
     // Coupon to CouponDTO (for displaying coupon some fields)
     CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);
-    return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, couponDTO);
+
+    // initialize values for response
+    response.IsSuccess = true;
+    response.Result = couponDTO;
+    response.StatusCode = HttpStatusCode.Created;
+
+    return Results.Ok(response);
 }).WithName("CreateCoupon").Produces<CouponDTO>(200).Produces(400);
 
 
