@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
 
 // get all coupons
 app.MapGet("/api/coupon", (ILogger<Program> _logger)  => {
+    APIResponse response = new APIResponse();
     _logger.Log(LogLevel.Information, "Getting All Coupons");
     return Results.Ok(CouponStore.couponList);
 }).WithName("GetCoupons").Produces<IEnumerable<Coupon>>(200);
