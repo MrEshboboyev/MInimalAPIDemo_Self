@@ -45,7 +45,7 @@ app.MapGet("/api/coupon", (ILogger<Program> _logger)  => {
 
     // returning response
     return Results.Ok(response);
-}).WithName("GetCoupons").Produces<IEnumerable<Coupon>>(200);
+}).WithName("GetCoupons").Produces<APIResponse>(200);
 
 
 // get by id coupon
