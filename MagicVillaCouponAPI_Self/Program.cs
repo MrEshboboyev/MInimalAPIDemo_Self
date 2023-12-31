@@ -42,6 +42,11 @@ app.MapPost("/api/coupon", ([FromBody] CouponCreateDTO coupon_C_DTO) =>
         return Results.BadRequest("Invalid Id or Coupon Name");
     }
 
+    // is coupon's Name unique
+    if(CouponStore.couponList.FirstOrDefault(x => x.Name == coupon_C_DTO.Name) !=  null)
+    {
+        return Results.BadRequest("Coupon Name already exists");
+    }
     coupon.Id = CouponStore.couponList.OrderByDescending(x => x.Id).First().Id + 1;
     CouponStore.couponList.Add(coupon);
     return Results.CreatedAtRoute("GetCouponById", new { id = coupon.Id}, coupon);
