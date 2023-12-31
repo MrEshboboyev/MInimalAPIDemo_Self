@@ -1,3 +1,4 @@
+using AutoMapper;
 using MagicVillaCouponAPI_Self;
 using MagicVillaCouponAPI_Self.Data;
 using MagicVillaCouponAPI_Self.Models;
@@ -39,7 +40,7 @@ app.MapGet("/api/coupon/{id:int}", (int id) =>
 
 
 // create coupon
-app.MapPost("/api/coupon", ([FromBody] CouponCreateDTO coupon_C_DTO) =>
+app.MapPost("/api/coupon", (IMapper _mapper, [FromBody] CouponCreateDTO coupon_C_DTO) =>
 {
     if(String.IsNullOrEmpty(coupon_C_DTO.Name))
     {
