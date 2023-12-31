@@ -57,6 +57,12 @@ app.MapGet("/api/coupon/{id:int}", (
     APIResponse response = new APIResponse();
 
     var coupon = CouponStore.couponList.FirstOrDefault(x => x.Id == id);
+    // Is coupon null
+    if(coupon == null)
+    {
+        response.ErrorMessages.Add("Coupon can't be found");
+        return Results.BadRequest(response);
+    }
 
     // mapping Coupon to CouponDTO
     CouponDTO couponDTO = _mapper.Map<CouponDTO>(coupon);
